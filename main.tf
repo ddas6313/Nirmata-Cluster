@@ -8,17 +8,17 @@ terraform {
   }
 
   backend "remote" {
-    organization = "sreyo23"
+    organization = "SREYO"
 
     workspaces {
-      name = "eks-cluster"
+      name = "AWS_CLUSTER_DevTest"
     }
   }
 
 }
 
 variable "region" {
-  default     = "us-east-2"
+  default     = "us-east-1"
   description = "AWS region"
 }
 
@@ -39,8 +39,8 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
 
-data "aws_availability_zones" "available" {
-}
+/* data "aws_availability_zones" "available" {
+} */
 
 resource "aws_security_group" "worker_group_mgmt_one" {
   name_prefix = "worker_group_mgmt_one"
@@ -80,8 +80,8 @@ module "vpc" {
 
   name                 = "${var.cluster_name}-vpc"
   cidr                 = "10.0.0.0/16"
-  azs                  = data.aws_availability_zones.available.names
-  private_subnets      = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  azs                  = ["us-east-1a", "us-east-1b"]
+  private_subnets      = ["10.0.1.0/24", "10.0.2.0/24"]
   public_subnets       = ["10.0.4.0/24"]
   enable_nat_gateway   = true
   single_nat_gateway   = true
@@ -126,6 +126,6 @@ provider "kubernetes" {
   host                   = data.aws_eks_cluster.cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.cluster.token
-  #load_config_file       = false
-  #version                = "~> 1.12"
+  load_config_file       = false
+  version                = "~> 1.12"
 }
