@@ -43,11 +43,11 @@ jobs:
    # nctl Login    
     - name: Login with Token
       run: |-
-      nctl clusters get --token "${{ secrets.NIRMATA_TOKEN }}"
+       nctl clusters get --token "${{ secrets.NIRMATA_TOKEN }}"
 
 
     - name: Register Cluster
       run: |-
-      nctl cluster register  "${cluster-namespace}" -f /home/runner/.kube/config -t default-addons-type -n nirmatatest --token "${{ secrets.NIRMATA_TOKEN }}"
+       nctl cluster register  "${cluster-namespace}" -f /home/runner/.kube/config -t default-addons-type -n nirmatatest --token "${{ secrets.NIRMATA_TOKEN }}"
        
 
