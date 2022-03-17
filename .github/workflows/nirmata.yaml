@@ -29,7 +29,7 @@ jobs:
     # Get the EKS credentials so we can deploy to the cluster
     - run: |-
         aws eks --region $EKS_REGION update-kubeconfig --name $EKS_CLUSTER
-        CLUSTER_ARN = $(kubectl config get-contexts --no-headers | awk '{ print $2 }')
+        #CLUSTER_ARN = $(kubectl config get-contexts --no-headers | awk '{ print $2 }')
        
         
         
@@ -50,5 +50,7 @@ jobs:
     - name: Register Cluster
       run: |-
        
-       nctl cluster register ${CLUSTER_ARN} -f /home/runner/.kube/config -t default-addons-type -n nirmatatest --token "${{ secrets.NIRMATA_TOKEN }}"       
-
+       Cluster_ARN=$(kubectl config get-contexts --no-headers | awk '{ print $2 }')
+       echo $Cluster_ARN
+       #nctl cluster register  arn:aws:eks:us-east-2:860174137652:cluster/dev -f /home/runner/.kube/config -t default-addons-type -n devtest --token "${{ secrets.NIRMATA_TOKEN }}"
+       nctl cluster register ${Cluster_ARN} -f /home/runner/.kube/config -t default-addons-type -n nirmatatest --token "${{ secrets.NIRMATA_TOKEN }}"
