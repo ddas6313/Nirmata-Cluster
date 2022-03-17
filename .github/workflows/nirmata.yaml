@@ -48,7 +48,7 @@ jobs:
 
     - name: Register Cluster
       run: |-
-       cluster-namespace = $(kubectl config get-contexts --no-headers | awk '{ print $2 }')
-       nctl cluster register  "'${cluster-namespace}'" -f /home/runner/.kube/config -t default-addons-type -n nirmatatest --token "${{ secrets.NIRMATA_TOKEN }}"
+       cluster_Name = $(kubectl config get-contexts --no-headers | awk '{ print $2 }')
+       nctl cluster register  "'${cluster_Name}'" -f /home/runner/.kube/config -t default-addons-type -n nirmatatest --token "${{ secrets.NIRMATA_TOKEN }}"
        
 
