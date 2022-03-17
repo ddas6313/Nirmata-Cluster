@@ -12,7 +12,7 @@ env:
 
 jobs:
   Job1:
-    name: Setup Dev Istio
+    name: Register Nirmata Cluster
     runs-on: ubuntu-latest
 
     steps:
@@ -29,7 +29,7 @@ jobs:
     # Get the EKS credentials so we can deploy to the cluster
     - run: |-
         aws eks --region $EKS_REGION update-kubeconfig --name $EKS_CLUSTER
-        cluster-namespace = kubectl config get-contexts --no-headers | awk '{ print $2 }'
+        cluster-namespace = $(kubectl config get-contexts --no-headers | awk '{ print $2 }')
         
         
    
@@ -48,6 +48,6 @@ jobs:
 
     - name: Register Cluster
       run: |-
-       nctl cluster register  "${cluster-namespace}" -f /home/runner/.kube/config -t default-addons-type -n nirmatatest --token "${{ secrets.NIRMATA_TOKEN }}"
+       nctl cluster register  "'${cluster-namespace}'" -f /home/runner/.kube/config -t default-addons-type -n nirmatatest --token "${{ secrets.NIRMATA_TOKEN }}"
        
 
